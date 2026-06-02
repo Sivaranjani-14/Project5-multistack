@@ -35,5 +35,5 @@ jobs:
         version_label: "release-${{ github.sha }}" # Unique label using git commit hash
         region: "us-east-1"                        # Ensure this matches your target variables.tf region
         deployment_package: php-bundle-${{ github.sha }}.zip
-        # FIX: Tells AWS to use the package if already uploaded, preventing code collisions 👇
+        # FIXadd: Tells AWS to use the package if already uploaded, preventing code collisions 👇
         use_existing_version_if_available: true
