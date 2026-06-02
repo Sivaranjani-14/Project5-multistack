@@ -4,7 +4,6 @@
  * Extracts environmental variables injected cleanly via AWS Elastic Beanstalk.
  */
 function getDBConnection(): PDO {
-    // Read Beanstalk application configuration keys
     $host    = $_SERVER['RDS_HOSTNAME'] ?? null;
     $dbName  = $_SERVER['RDS_DB_NAME']   ?? 'phpdb';
     $user    = $_SERVER['RDS_USERNAME']  ?? null;
@@ -12,9 +11,7 @@ function getDBConnection(): PDO {
     $port    = $_SERVER['RDS_PORT']      ?? '3306';
     $charset = 'utf8mb4';
 
-    // Fail gracefully if variables aren't injected yet (local dev safe fallbacks)
     if (!$host || !$user || !$password) {
-        // Fallback for local development if environment context is missing
         $host = $host ?? '127.0.0.1';
         $user = $user ?? 'root';
         $password = $password ?? '';
@@ -29,9 +26,21 @@ function getDBConnection(): PDO {
     ];
 
     try {
-        return new PDO($dsn, $user, $password, $options);
+        $pdo = new PDO($dsn, $user, $password, $options);
+        
+        // AUTOMATED SCHEMA INITIALIZATION CODE 👇
+        $tableSchema = "
+        CREATE TABLE IF NOT EXISTS users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            username VARCHAR(50) NOT NULL,
+            email VARCHAR(100) NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+        ";
+        $pdo->exec($tableSchema);
+        
+        return $pdo;
     } catch (\PDOException $e) {
-        // Log errors securely in a real production stack; display readable message for now
         throw new \PDOException("Database connection established failed: " . $e->getMessage(), (int)$e->getCode());
     }
 }
