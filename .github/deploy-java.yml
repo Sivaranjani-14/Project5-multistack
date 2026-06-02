@@ -1,0 +1,42 @@
+name: Deploy Java Tomcat Stack
+
+on:
+  push:
+    paths:
+      - 'java-app/**' # Only triggers when files inside the java-app folder change
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v4
+
+    - name: Set up Java 17 Runtime
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: 'maven'
+
+    - name: Compile and Package with Maven
+      run: |
+        cd java-app
+        mvn clean package
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    # Updates your Auto Scaling Launch Template instances with the new build
+    - name: Deploy War Artifact to Target Tomcat ASG
+      run: |
+        echo "Uploading ROOT.war to target servers..."
+        # If deploying via CodeDeploy or S3 bucket paths, add your AWS CLI sync script here:
+        # aws s3 cp java-app/target/ROOT.war s3://your-java-deployment-bucket/ROOT.war
