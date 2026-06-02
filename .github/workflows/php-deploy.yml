@@ -1,0 +1,37 @@
+name: Deploy PHP App to AWS Elastic Beanstalk
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'php-app/**'  # Only triggers if code changes inside your php-app directory
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Build & Streamline to AWS Beanstalk
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v4
+
+    - name: Package PHP Application
+      run: |
+        cd php-app
+        zip -r ../php-bundle-${{ github.sha }}.zip ./* -x "*.git*"
+        cd ..
+
+    - name: Deploy to AWS Elastic Beanstalk
+      uses: einaregilsson/beanstalk-deploy@v22
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: "php-user-info-app"      # Matches your exact Terraform main.tf setting
+        environment_name: "php-84-prod-env"        # Matches your exact Terraform main.tf setting
+        version_label: "release-${{ github.sha }}" # Unique label using git commit hash
+        region: "us-east-1"                        # Ensure this matches your target variables.tf region
+        deployment_package: php-bundle-${{ github.sha }}.zip
