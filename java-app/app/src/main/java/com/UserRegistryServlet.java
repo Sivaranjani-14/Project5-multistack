@@ -69,7 +69,7 @@ public class UserRegistryServlet extends HttpServlet {
         out.println("</head>");
         out.println("<body>");
         out.println("<div class='container'>");
-        out.println("    <h2>Java Stack: Student Enrollment System</h2>");
+        out.println("    <h2>Java : Student Enrollment System</h2>");
         
         if (!message.isEmpty()) {
             out.println("    <div class='alert " + statusClass + "'>" + message + "</div>");
