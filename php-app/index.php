@@ -78,11 +78,11 @@ try {
 
     <form method="POST" action="index.php">
         <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username">Username:</label>
             <input type="text" id="username" name="username" placeholder="e.g. john_doe" required>
         </div>
         <div class="form-group">
-            <label for="email">Email Address</label>
+            <label for="email">Email Address:</label>
             <input type="email" id="email" name="email" placeholder="e.g. john@example.com" required>
         </div>
         <button type="submit">Commit to Database</button>
