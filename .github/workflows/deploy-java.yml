@@ -43,4 +43,4 @@ jobs:
     - name: Trigger Auto Scaling Instance Refresh
       run: |
         echo "Refreshing Auto Scaling Group to pull down the new code..."
-        aws ec2 start-instance-refresh --auto-scaling-group-name java-tomcat-target-group
+        aws autoscaling start-instance-refresh --auto-scaling-group-name java-tomcat-target-group
