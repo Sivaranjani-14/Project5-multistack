@@ -3,8 +3,8 @@ name: Deploy Java Tomcat Stack
 on:
   push:
     paths:
-      - 'java-app/**' # Triggers when app files change
-      - '.github/workflows/deploy-java.yml' # Triggers when this workflow changes
+      - 'java-app/**'
+      - '.github/workflows/deploy-java.yml'
     branches:
       - main
 
@@ -35,7 +35,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
-   - name: Deploy War Artifact to Target Tomcat S3 Bucket
+    - name: Deploy War Artifact to Target Tomcat S3 Bucket
       run: |
         echo "Uploading ROOT.war to S3 deployment bucket..."
         aws s3 cp java-app/target/ROOT.war s3://dev-java-app-deploy-bucket-674693859537/ROOT.war
@@ -43,4 +43,4 @@ jobs:
     - name: Trigger Auto Scaling Instance Refresh
       run: |
         echo "Refreshing Auto Scaling Group to pull down the new code..."
-        aws ec2 start-instance-refresh --auto-scaling-group-name java-tomcat-asg
+        aws ec2 start-instance-refresh --auto-scaling-group-name java-tomcat-target-group
