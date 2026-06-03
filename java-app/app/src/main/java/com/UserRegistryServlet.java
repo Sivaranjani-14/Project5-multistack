@@ -48,7 +48,7 @@ public class UserRegistryServlet extends HttpServlet {
         out.println("<head>");
         out.println("    <meta charset='UTF-8'>");
         out.println("    <meta name='viewport' content='width=device-width, initial-scale=1.0'>");
-        out.println("    <title>Java Student Management </title>");
+        out.println("    <title>Java Student Management system</title>");
         out.println("    <style>");
         out.println("        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f0f4f8; color: #333; margin: 0; padding: 40px; }");
         out.println("        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 4px solid #2563eb; }");
