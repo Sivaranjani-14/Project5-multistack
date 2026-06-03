@@ -3,7 +3,8 @@ name: Deploy Java Tomcat Stack
 on:
   push:
     paths:
-      - 'java-app/**' # Only triggers when files inside the java-app folder change
+      - 'java-app/**' # Triggers when app files change
+      - '.github/workflows/deploy-java.yml' # Triggers when this workflow changes
     branches:
       - main
 
@@ -34,9 +35,12 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
-    # Updates your Auto Scaling Launch Template instances with the new build
-    - name: Deploy War Artifact to Target Tomcat ASG
+    - name: Deploy War Artifact to Target Tomcat S3 Bucket
       run: |
-        echo "Uploading ROOT.war to target servers..."
-        # If deploying via CodeDeploy or S3 bucket paths, add your AWS CLI sync script here:
-        # aws s3 cp java-app/target/ROOT.war s3://your-java-deployment-bucket/ROOT.war
+        echo "Uploading ROOT.war to S3 deployment bucket..."
+        aws s3 cp java-app/target/ROOT.war s3://siva-tomcat-deploy-bucket/ROOT.war
+
+    - name: Trigger Auto Scaling Instance Refresh
+      run: |
+        echo "Refreshing Auto Scaling Group to pull down the new code..."
+        aws ec2 start-instance-refresh --auto-scaling-group-name java-tomcat-asg
