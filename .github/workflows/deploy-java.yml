@@ -35,10 +35,10 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
-    - name: Deploy War Artifact to Target Tomcat S3 Bucket
+   - name: Deploy War Artifact to Target Tomcat S3 Bucket
       run: |
         echo "Uploading ROOT.war to S3 deployment bucket..."
-        aws s3 cp java-app/target/ROOT.war s3://siva-tomcat-deploy-bucket/ROOT.war
+        aws s3 cp java-app/target/ROOT.war s3://dev-java-app-deploy-bucket-674693859537/ROOT.war
 
     - name: Trigger Auto Scaling Instance Refresh
       run: |
