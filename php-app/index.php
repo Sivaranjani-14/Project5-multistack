@@ -70,7 +70,7 @@ try {
 <body>
 
 <div class="container">
-    <h2>AWS Multi-Stack App: PHP User Registry</h2>
+    <h2>AWS Multi-Stack: PHP User Registry</h2>
     
     <?php if ($message): ?>
         <div class="alert <?= $statusClass ?>"><?= htmlspecialchars($message) ?></div>
