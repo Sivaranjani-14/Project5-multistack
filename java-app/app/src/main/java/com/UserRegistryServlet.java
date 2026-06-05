@@ -78,7 +78,7 @@ public class UserRegistryServlet extends HttpServlet {
         out.println("    <form method='POST' action='./'>");
         out.println("        <div class='form-group'>");
         out.println("            <label for='student_name'>Student Full Name</label>");
-        out.println("            <input type='text' id='student_name' name='student_name' placeholder='e.g. Sunil Kumar' required>");
+        out.println("            <input type='text' id='student_name' name='student_name' placeholder='e.g. Sivaranjani' required>");
         out.println("        </div>");
         out.println("        <div class='form-group'>");
         out.println("            <label for='course'>Enrolled Course</label>");
